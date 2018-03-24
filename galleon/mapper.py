@@ -1,11 +1,23 @@
 from jsonschema import RefResolver
-from jsonmapping import Mapper as BaseMapper, SchemaVisitor
-from .value import extract_array, extract_value, filter_null
+from jsonmapping import Mapper as BaseMapper
+from jsonmapping import SchemaVisitor
+from .value import (
+    extract_array,
+    extract_value,
+    filter_null
+    )
 
 
 class Mapper(BaseMapper):
 
-    def __init__(self, mapping, resolver, visitor=None, scope=None, mapping_resolver=None):
+    def __init__(
+        self,
+        mapping,
+        resolver,
+        visitor=None,
+        scope=None,
+        mapping_resolver=None
+        ):
 
         if visitor is None:
             schema = resolver.referrer
@@ -51,7 +63,7 @@ class Mapper(BaseMapper):
                                     )
                                 self._children.append(mapper)
             else:
-                self._children = None
+                self._children = None # pragma: no cover
         return self._children
 
     def apply(self, data):
@@ -68,7 +80,7 @@ class Mapper(BaseMapper):
             for child in self.children:
                 value = child.apply(data)
                 if not value and child.optional:
-                    continue
+                    continue # pragma: no cover
                 obj_empty = False if value else obj_empty
 
                 if child.visitor.name in obj and child.visitor.is_array:
