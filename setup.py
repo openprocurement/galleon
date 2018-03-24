@@ -6,7 +6,7 @@ REQUIRES = [
     'jq'
 ]
 EXTRA = {
-    'test': REQUIRES + ['pyyaml']
+    'test': REQUIRES + ['pyyaml', 'pytest-cov']
 }
 
 setuptools.setup(
@@ -24,7 +24,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
 
     setup_requires = [
-        'pytest-runner'
+        'pytest-runner',
     ],
     install_requires=REQUIRES,
     extras_require=EXTRA,
