@@ -32,7 +32,7 @@ def extract_value(mapping, bind, data):
     and apply certain transformations to normalize the value. """
     
     if not mapping.get('src') and mapping.get('default'):
-        return False, mapping.get('default')
+        return convert_value(bind, mapping.get('default'))
     src = mapping.get('src', '.{}'.format(bind.name))
     src = src if src.startswith('.') else '.{}'.format(src)
 
