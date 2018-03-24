@@ -17,7 +17,7 @@ def extract_array(mapper, bind, data):
     
     src = mapper.mapping.get('src', '.{}'.format(bind.name))
     src = src if src.startswith('.') else '.{}'.format(src)
-    
+    # import ipdb; ipdb.set_trace()
     return [
         mapper.apply(item)
         for item in jq.jq(src).transform(data)
@@ -49,8 +49,7 @@ def extract_value(mapping, bind, data):
     #     value = format_str % tuple('' if v is None else v for v in values)
 
     empty = is_empty(value)
-    
+    # import ipdb; ipdb.set_trace()
     if empty:
         value = mapping.get('default') or bind.schema.get('default')
-    value = convert_value(bind, value)
     return convert_value(bind, value)
