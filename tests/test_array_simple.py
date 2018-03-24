@@ -3,7 +3,8 @@ from galleon import Mapper
 
 
 class TestArray(object):
-    params = {'test_simple': [
+    params = {
+        'test_simple': [
             {
                 'data': {
                     'id': 'id',
@@ -11,7 +12,8 @@ class TestArray(object):
                     'data': {
                         'items': [
                             {'id': '1'},
-                            {'id': '2'}
+                            {'id': '2'},
+                            {'invalid': '3'}
                         ]
                     }
                 },
@@ -48,3 +50,7 @@ class TestArray(object):
         assert Mapper(
                 TestArray.TEST_MAPPING, resolver
             ).apply(data) == result
+
+
+
+# class TestArrayNested(object):

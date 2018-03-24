@@ -15,13 +15,16 @@ def filter_null(value):
 
 def extract_array(mapper, bind, data):
     
-    src = mapper.mapping.get('src', '.{}'.format(bind.name))
+    src = mapper.mapping.get(
+        'src', '.{}'.format(bind.name)
+    )
     src = src if src.startswith('.') else '.{}'.format(src)
-    # import ipdb; ipdb.set_trace()
-    return [
+
+    result = [
         mapper.apply(item)
         for item in jq.jq(src).transform(data)
     ]
+    return [item for item in result if item]
 
 
 def extract_value(mapping, bind, data):
