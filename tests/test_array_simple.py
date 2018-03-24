@@ -37,10 +37,13 @@ class TestArray(object):
             },
             'items': {
                 'src': 'data.items',
+                '$ref': '#/definitions/item'
+            },
+        },
+        'definitions': {
+            'item': {
                 'mapping': {
-                    'id': {
-                        'src': 'id'
-                    }
+                'id': { 'src': 'id' }
                 }
             }
         }
