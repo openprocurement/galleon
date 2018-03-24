@@ -1,13 +1,7 @@
 import jq
 from itertools import chain
 from jsonmapping.value import is_empty, convert_value
-
-
-FILTER_NULL = """
-with_entries(
-    select(.value != null)
-)
-"""
+from .transform import FILTER_NULL, TRANSFORMS, apply_transformations
 
 
 def filter_null(value):
@@ -22,7 +16,6 @@ def _get_source(mapper, bind):
         'src', '.{}'.format(bind.name)
     )
     if isinstance(src, (list, tuple)):
-        # import ipdb; ipdb.set_trace()
         sources = [
             value if value.startswith('.') else '.{}'.format(value)
             for value in src
@@ -49,7 +42,11 @@ def extract_array(mapper, bind, data):
             mapper.apply(item)
             for item in jq.jq(value).transform(data)
         ]
-    return [item for item in result if item]
+    return apply_transformations(
+        mapper.mapping,
+        bind,
+        [item for item in result if item]
+        )
 
 
 def extract_value(mapping, bind, data):
@@ -61,14 +58,8 @@ def extract_value(mapping, bind, data):
         return src
 
     value = jq.jq(src).transform(data)
-
-    # TODO: uncoment and make transforms work
-    # for transform in mapping.get('transforms', []):
-    #     # any added transforms must also be added to the schema.
-    #     values = list(TRANSFORMS[transform](mapping, bind, values))
-
+    value = apply_transformations(mapping, bind, value)
     empty = is_empty(value)
-    # import ipdb; ipdb.set_trace()
     if empty:
         value = mapping.get('default') or bind.schema.get('default')
     return convert_value(bind, value)

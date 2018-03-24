@@ -1,9 +1,9 @@
-from galleon import Mapper
 from .utils import simple_resolver as resolver
+from .base import BaseTest
 
 
 
-class TestMapperComplexPath(object):
+class TestMapperComplexPath(BaseTest):
     params = {
         'test_simple': [
             {
@@ -38,9 +38,3 @@ class TestMapperComplexPath(object):
             }
         }
     }
-    def test_simple(self, resolver, data, result):
-        mapper = Mapper(
-            TestMapperComplexPath.TEST_MAPPING,
-            resolver
-        )
-        assert mapper.apply(data) == result

@@ -1,8 +1,8 @@
-from galleon import Mapper
+from .base import BaseTest
 from .utils import simple_resolver as resolver
 
 
-class TestMapperSimple(object):
+class TestMapperSimple(BaseTest):
     params = {
         'test_simple': [
             {
@@ -34,15 +34,8 @@ class TestMapperSimple(object):
         }
     }
 
-    def test_simple(self, resolver, data, result):
-        mapper = Mapper(
-            TestMapperSimple.TEST_MAPPING,
-            resolver
-        )
-        assert mapper.apply(data) == result
 
-
-class TestMapperDefault(object):
+class TestMapperDefault(BaseTest):
     params = {
         'test_simple': [
             {
@@ -67,15 +60,8 @@ class TestMapperDefault(object):
         }
     }
 
-    def test_simple(self, resolver, data, result):
-        mapper = Mapper(
-            TestMapperDefault.TEST_MAPPING,
-            resolver
-        )
-        assert mapper.apply(data) == result
 
-
-class TestMapperDefault2(object):
+class TestMapperDefault2(BaseTest):
     params = {
         'test_simple': [
             {
@@ -97,9 +83,24 @@ class TestMapperDefault2(object):
         }
     }
 
-    def test_simple(self, resolver, data, result):
-        mapper = Mapper(
-            TestMapperDefault2.TEST_MAPPING,
-            resolver
-        )
-        assert mapper.apply(data) == result
+
+class TestMapperTransform(BaseTest):
+    params = {
+        'test_simple': [
+            {
+                "data": {'id': 'id-123321'},
+                "result": {'id': 'id'}
+            },
+        ],
+    }
+
+    TEST_MAPPING = {
+        'mapping': {
+            'id': {
+                'src': 'id',
+                'transforms': [
+                    '.|split("-")|first'
+                ]
+            },
+        }
+    }

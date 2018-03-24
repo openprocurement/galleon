@@ -1,8 +1,8 @@
 from .utils import array_resolver as resolver
-from galleon import Mapper
+from .base import BaseTest
 
 
-class TestArray(object):
+class TestArray(BaseTest):
     params = {
         'test_simple': [
             {
@@ -49,13 +49,8 @@ class TestArray(object):
         }
     }
 
-    def test_simple(self, resolver, data, result):
-        assert Mapper(
-                TestArray.TEST_MAPPING, resolver
-            ).apply(data) == result
 
-
-class TestArrayMultipleSources(object):
+class TestArrayMultipleSources(BaseTest):
     params = {
         'test_simple': [
             {
@@ -69,7 +64,8 @@ class TestArrayMultipleSources(object):
                             {'invalid': '3'}
                         ],
                         'values': [
-                            {'id': '3'}
+                            {'id': '3'},
+                            {'id': '1'}
                         ]
                     }
                 },
@@ -97,6 +93,7 @@ class TestArrayMultipleSources(object):
                     'data.items',
                     'data.values'
                 ],
+                'transforms': ['uniq'],
                 '$ref': '#/definitions/item'
             },
         },
@@ -108,12 +105,6 @@ class TestArrayMultipleSources(object):
             }
         }
     }
-
-    def test_simple(self, resolver, data, result):
-        assert Mapper(
-                TestArrayMultipleSources.TEST_MAPPING, resolver
-            ).apply(data) == result
-
 
 
 # class TestArrayNested(object):
