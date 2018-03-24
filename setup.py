@@ -5,8 +5,11 @@ REQUIRES = [
     'jsonmapping',
     'jq'
 ]
+TEST = REQUIRES + ['pytest', 'pytest-cov']
+DEV = TEST + ['ipdb']
 EXTRA = {
-    'test': REQUIRES + ['pyyaml', 'pytest-cov']
+    'test': TEST,
+    'dev': DEV
 }
 
 setuptools.setup(
