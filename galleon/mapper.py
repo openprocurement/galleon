@@ -87,7 +87,7 @@ class Mapper(BaseMapper):
         mapping. It is used to skip optional branches of the object graph. """
         if not self.visitor.parent:
             # TODO: tests
-            hooks = self.mapping.get('pre-hooks')
+            hooks = self.mapping.get('pre-hooks', [])
             for hook in hooks:
                 data = jq(hook).transform(data)
 
