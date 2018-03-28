@@ -1,6 +1,8 @@
 from jsonschema import RefResolver
 from jsonmapping import Mapper as BaseMapper
 from jsonmapping import SchemaVisitor
+from copy import deepcopy
+from jq import jq
 from .value import (
     extract_array,
     extract_value,
@@ -11,13 +13,13 @@ from .value import (
 class Mapper(BaseMapper):
 
     def __init__(
-        self,
-        mapping,
-        resolver,
-        visitor=None,
-        scope=None,
-        mapping_resolver=None
-        ):
+            self,
+            mapping,
+            resolver,
+            visitor=None,
+            scope=None,
+            mapping_resolver=None
+            ):
 
         if visitor is None:
             schema = resolver.referrer
@@ -32,8 +34,20 @@ class Mapper(BaseMapper):
         else:
             self.mapping_resolver = mapping_resolver
         if '$ref' in self.mapping:
-            with self.mapping_resolver.resolving(self.mapping.pop('$ref')) as data:
+            with self.mapping_resolver.resolving(self.mapping.pop('$ref'))\
+                    as data:
                 self.mapping.update(data)
+            src = self.mapping.get('src')
+            if src:
+                _mapping = deepcopy(self.mapping)
+                if self.visitor.is_object:
+                    for item, prop in _mapping.get('mapping', {}).items():
+                        _src = prop.get('src')
+                        if _src:
+                            _mapping['mapping'][item]['src'] = "{}.{}".format(
+                                src, prop['src']
+                                )
+                    self.mapping = _mapping
 
     @property
     def children(self):
@@ -71,7 +85,12 @@ class Mapper(BaseMapper):
         is a tuple of a boolean and the resulting data element. The boolean
         indicates whether any values were mapped in the child nodes of the
         mapping. It is used to skip optional branches of the object graph. """
-        
+        if not self.visitor.parent:
+            # TODO: tests
+            hooks = self.mapping.get('pre-hooks')
+            for hook in hooks:
+                data = jq(hook).transform(data)
+
         if self.visitor.is_object:
             obj = {}
             if self.visitor.parent is None:
@@ -80,7 +99,7 @@ class Mapper(BaseMapper):
             for child in self.children:
                 value = child.apply(data)
                 if not value and child.optional:
-                    continue # pragma: no cover
+                    continue  # pragma: no cover
                 obj_empty = False if value else obj_empty
 
                 if child.visitor.name in obj and child.visitor.is_array:
@@ -91,6 +110,6 @@ class Mapper(BaseMapper):
         elif self.visitor.is_array:
             value = extract_array(self.children, self.visitor, data)
             return value
-            
+
         elif self.visitor.is_value:
             return extract_value(self.mapping, self.visitor, data)

@@ -1,7 +1,6 @@
 import jq
-from itertools import chain
 from jsonmapping.value import is_empty, convert_value
-from .transform import FILTER_NULL, TRANSFORMS, apply_transformations
+from .transform import FILTER_NULL, apply_transformations
 
 
 def filter_null(value):
@@ -16,6 +15,7 @@ def _get_source(mapper, bind):
         'src', '.{}'.format(bind.name)
     )
     if isinstance(src, (list, tuple)):
+
         sources = [
             value if value.startswith('.') else '.{}'.format(value)
             for value in src
@@ -26,6 +26,19 @@ def _get_source(mapper, bind):
 
 
 def extract_array(mapper, bind, data):
+
+    def extract(iterator):
+        result = []
+        if not isinstance(iterator, list):
+            iterator = [iterator]
+        for item in iterator:
+            got = mapper.apply(item)
+            if isinstance(got, list):
+                result.extend(got)
+            else:
+                result.append(got)
+        return result
+
     default, value = _get_source(mapper, bind)
     # TODO: test for default array
     if default:
@@ -33,15 +46,9 @@ def extract_array(mapper, bind, data):
     if isinstance(value, list):
         result = []
         for source in value:
-            result.extend([
-                mapper.apply(item)
-                for item in jq.jq(source).transform(data)
-            ])
+            result.extend(extract(jq.jq(source).transform(data)))
     else:
-        result = [
-            mapper.apply(item)
-            for item in jq.jq(value).transform(data)
-        ]
+        result = extract(jq.jq(value).transform(data))
     return apply_transformations(
         mapper.mapping,
         bind,
@@ -52,14 +59,17 @@ def extract_array(mapper, bind, data):
 def extract_value(mapping, bind, data):
     """ Given a mapping and JSON schema spec, extract a value from ``data``
     and apply certain transformations to normalize the value. """
-    
     default, src = _get_source(mapping, bind)
     if default:
         return src
-
-    value = jq.jq(src).transform(data)
+    if isinstance(data, dict):  # TODO: test me
+        value = jq.jq(src).transform(data)
+    else:
+        value = data
     value = apply_transformations(mapping, bind, value)
     empty = is_empty(value)
     if empty:
         value = mapping.get('default') or bind.schema.get('default')
-    return convert_value(bind, value)
+    return value
+    # TODO: breaks json serialization
+    # return convert_value(bind, value)

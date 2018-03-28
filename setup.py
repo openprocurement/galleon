@@ -26,7 +26,7 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
-    setup_requires = [
+    setup_requires=[
         'pytest-runner',
     ],
     install_requires=REQUIRES,
