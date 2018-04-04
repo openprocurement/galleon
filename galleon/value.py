@@ -10,7 +10,7 @@ def filter_null(value):
 def _get_source(mapper, bind):
     mapping = getattr(mapper, 'mapping', mapper)
     if not mapping.get('src') and mapping.get('default'):
-        return True, convert_value(bind, mapping.get('default'))
+        return True, mapping.get('default')
     src = mapping.get(
         'src', '.{}'.format(bind.name)
     )
