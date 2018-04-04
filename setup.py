@@ -14,7 +14,7 @@ EXTRA = {
 
 setuptools.setup(
     name="galleon",
-    version="0.1.0",
+    version="0.1.1",
     url="-",
 
     author="yshalenyk",
@@ -23,9 +23,11 @@ setuptools.setup(
 
     description="Openprocurement Galleon",
     long_description=open('README.rst').read(),
+    zip_safe=False,
+    include_package_data=True,
 
     packages=setuptools.find_packages(),
-
+    tests_require=TEST,
     setup_requires=[
         'pytest-runner',
     ],
