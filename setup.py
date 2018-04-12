@@ -5,7 +5,7 @@ REQUIRES = [
     'jsonmapping',
     'jq'
 ]
-TEST = REQUIRES + ['pytest', 'pytest-cov']
+TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark']
 DEV = TEST + ['ipdb']
 EXTRA = {
     'test': TEST,
