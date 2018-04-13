@@ -1,28 +1,16 @@
 import jq
 from jsonmapping.value import is_empty, convert_value
-from .transform import FILTER_NULL, apply_transformations
-
-
-def filter_null(value):
-    return jq.jq(FILTER_NULL).transform(value)
+from .transform import apply_transformations
+from .finder import finder
 
 
 def _get_source(mapper, bind):
     mapping = getattr(mapper, 'mapping', mapper)
     if not mapping.get('src') and mapping.get('default'):
-        return True, mapping.get('default')
-    src = mapping.get(
-        'src', '.{}'.format(bind.name)
-    )
-    if isinstance(src, (list, tuple)):
-
-        sources = [
-            value if value.startswith('.') else '.{}'.format(value)
-            for value in src
-        ]
-    else:
-        sources = src if src.startswith('.') else '.{}'.format(src)
-    return (False, sources)
+        return (True, mapping.get('default'))
+    return (False, mapping.get(
+        'src', '{}'.format(bind.name)
+    ))
 
 
 def extract_array(mapper, bind, data):
@@ -46,9 +34,9 @@ def extract_array(mapper, bind, data):
     if isinstance(value, list):
         result = []
         for source in value:
-            result.extend(extract(jq.jq(source).transform(data)))
+            result.extend(extract(finder(source, data)))
     else:
-        result = extract(jq.jq(value).transform(data))
+        result = extract(finder(value, data))
     return apply_transformations(
         mapper.mapping,
         bind,
@@ -63,7 +51,7 @@ def extract_value(mapping, bind, data):
     if default:
         return src
     if isinstance(data, dict):  # TODO: test me
-        value = jq.jq(src).transform(data)
+        value = finder(src, data)
     else:
         value = data
     value = apply_transformations(mapping, bind, value)

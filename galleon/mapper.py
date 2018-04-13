@@ -6,7 +6,6 @@ from jq import jq
 from .value import (
     extract_array,
     extract_value,
-    filter_null
     )
 
 
@@ -95,18 +94,17 @@ class Mapper(BaseMapper):
             obj = {}
             if self.visitor.parent is None:
                 obj['$schema'] = self.visitor.path
-            obj_empty = True
+
             for child in self.children:
                 value = child.apply(data)
                 if not value and child.optional:
                     continue  # pragma: no cover
-                obj_empty = False if value else obj_empty
-
-                if child.visitor.name in obj and child.visitor.is_array:
-                    obj[child.visitor.name].extend(value)
-                else:
-                    obj[child.visitor.name] = value
-            return filter_null(obj)
+                if value:
+                    if child.visitor.name in obj and child.visitor.is_array:
+                        obj[child.visitor.name].extend(value)
+                    else:
+                        obj[child.visitor.name] = value
+            return obj
         elif self.visitor.is_array:
             value = extract_array(self.children, self.visitor, data)
             return value

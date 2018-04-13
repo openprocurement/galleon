@@ -19,7 +19,7 @@ mapping:
   parties:
     src:
       - procuringEntity
-      - "bids | [.[].tenderers[]]"
+      - "bids[].tenderers[]"
     $ref: "#/definitions/organization"
     transforms:
       - uniq
@@ -77,7 +77,7 @@ mapping:
         src: awardPeriod
         $ref: "#/definitions/period"
       tenderers:
-        src: "bids | [.[].tenderers[]]"
+        src: "bids[].tenderers[]"
         transforms:
           - uniq
         $ref: "#/definitions/organizationReference"

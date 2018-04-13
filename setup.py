@@ -3,7 +3,8 @@ import setuptools
 REQUIRES = [
     'jsonschema',
     'jsonmapping',
-    'jq'
+    'jq',
+    'jmespath'
 ]
 TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark']
 DEV = TEST + ['ipdb']

@@ -1,6 +1,7 @@
 from galleon import Mapper
 from jsonschema import RefResolver
-from .base import TENDER, MAPPING, SCHEMA
+from .base import TENDER, MAPPING, SCHEMA, RESULT
+
 
 class TestBechmark(object):
     params = {
@@ -13,4 +14,5 @@ class TestBechmark(object):
         )
 
     def test_benchmark(self, benchmark, data):
-        benchmark(self.mapper.apply, TENDER)
+        result = benchmark(self.mapper.apply, TENDER)
+        assert RESULT == result

@@ -1,5 +1,6 @@
 import jq
 from pkg_resources import iter_entry_points
+from .finder import finder
 
 
 FILTER_NULL = """

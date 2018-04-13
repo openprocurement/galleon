@@ -1,0 +1,290 @@
+{
+  "$schema": "http://standard.open-contracting.org/schema/1__1__2/release-schema.json",
+  "id": "15ed90e06ae945af848ee3b08e0ec1af",
+  "ocid": "UA-2016-04-19-000014-1",
+  "date": "2016-04-20T13:03:47.338744+03:00",
+  "language": "uk",
+  "initiationType": [
+    "tender"
+  ],
+  "parties": [
+    {
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "0065475395",
+        "legalName": "ДП \"ЙогаСофт1\""
+      },
+      "name": "ЙогаСофт1",
+      "address": {
+        "streetAddress": "вул. Хрещатик, буд.1, офіс 777",
+        "locality": "ГЛИНЯНКА",
+        "postalCode": "02134",
+        "countryName": "УКРАЇНА"
+      }
+    },
+    {
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "4569517536",
+        "legalName": "ВАТ \"Килимки\""
+      },
+      "name": "Килимки",
+      "address": {
+        "streetAddress": "вул. Гвардійська, буд.44",
+        "locality": "ГОЛОСІЇВСЬКИЙ",
+        "postalCode": "02134",
+        "countryName": "УКРАЇНА"
+      }
+    },
+    {
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "0159357789",
+        "legalName": "ТОВ \"РушничОК\""
+      },
+      "name": "РушничОК",
+      "address": {
+        "streetAddress": "просп. Маяковського, 8Б",
+        "locality": "ДЕСНЯНСЬКИЙ",
+        "postalCode": "02156",
+        "countryName": "УКРАЇНА"
+      }
+    }
+  ],
+  "buyer": {
+    "name": "ЙогаСофт1",
+    "id": "0065475395"
+  },
+  "awards": [
+    {
+      "id": "9978e84b2fc34af69cab9ed61234f502",
+      "status": "active",
+      "date": "2016-04-19T14:23:39.996600+03:00",
+      "value": {
+        "amount": 6500,
+        "currency": "UAH"
+      },
+      "suppliers": [
+        {
+          "name": "РушничОК",
+          "id": "0159357789"
+        }
+      ],
+      "items": [
+        {
+          "id": "9d18a4e24b1947ef8747fa07511e5fd3",
+          "description": "Машини і процеси поліграфічного виробництва",
+          "classification": {
+            "scheme": "CPV",
+            "id": "37510000-6"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "ДК015",
+              "id": "I.2 11.05.01"
+            }
+          ],
+          "quantity": 789,
+          "unit": {
+            "name": "\tшт.\t",
+            "id": "H87"
+          }
+        },
+        {
+          "id": "c10fb1cfebbf4b658aa70953aba68c3e",
+          "description": "Функціональне (галузеве) машинобудування",
+          "classification": {
+            "scheme": "CPV",
+            "id": "37512000-0"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "ДК015",
+              "id": "I.2 11.05"
+            }
+          ],
+          "quantity": 777,
+          "unit": {
+            "name": "\tм.кв.\t",
+            "id": "MTK"
+          }
+        }
+      ],
+      "contractPeriod": {
+        "startDate": "2016-04-19T14:23:39.983202+03:00",
+        "endDate": "2016-04-20T12:58:46.919222+03:00"
+      },
+      "documents": [
+        {
+          "title": "ЦСК которые поддерживаем.docx",
+          "id": "adfb54b947fe45ad9b4d981b55cdd2e3",
+          "documentType": "awardNotice",
+          "url": "https://public.docs-sandbox.openprocurement.org/get/ee37544b4ee2432893227620dfda83bc?Prefix=15ed90e06ae945af848ee3b08e0ec1af%2Fadfb54b947fe45ad9b4d981b55cdd2e3&KeyID=1331dc52&Signature=3Nu09%2FN2ZO5GLWxMLG9PxmyhKOZ0yyLMVkaRWmp342S2u%252BR12jA9M17Ot%252BU%252BwVbHU9vT%2FkFlrUprNvzH4sndBQ%253D%253D",
+          "datePublished": "2016-04-20T12:58:45.654994+03:00",
+          "dateModified": "2016-04-20T12:58:45.655019+03:00",
+          "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        }
+      ]
+    }
+  ],
+  "contracts": [
+    {
+      "id": "b9f6016757ba48c5b7e2b5831954efab",
+      "status": "pending",
+      "value": {
+        "amount": 6500,
+        "currency": "UAH"
+      },
+      "items": [
+        {
+          "id": "9d18a4e24b1947ef8747fa07511e5fd3",
+          "description": "Машини і процеси поліграфічного виробництва",
+          "classification": {
+            "scheme": "CPV",
+            "id": "37510000-6"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "ДК015",
+              "id": "I.2 11.05.01"
+            }
+          ],
+          "quantity": 789,
+          "unit": {
+            "name": "\tшт.\t",
+            "id": "H87"
+          }
+        },
+        {
+          "id": "c10fb1cfebbf4b658aa70953aba68c3e",
+          "description": "Функціональне (галузеве) машинобудування",
+          "classification": {
+            "scheme": "CPV",
+            "id": "37512000-0"
+          },
+          "additionalClassifications": [
+            {
+              "scheme": "ДК015",
+              "id": "I.2 11.05"
+            }
+          ],
+          "quantity": 777,
+          "unit": {
+            "name": "\tм.кв.\t",
+            "id": "MTK"
+          }
+        }
+      ]
+    }
+  ],
+  "tender": {
+    "status": "active",
+    "id": "15ed90e06ae945af848ee3b08e0ec1af",
+    "title": "Відкриті торги/безлотовая",
+    "description": "Ігри та іграшки; атракціони",
+    "items": [
+      {
+        "id": "9d18a4e24b1947ef8747fa07511e5fd3",
+        "description": "Машини і процеси поліграфічного виробництва",
+        "classification": {
+          "scheme": "CPV",
+          "id": "37510000-6"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "ДК015",
+            "id": "I.2 11.05.01"
+          }
+        ],
+        "quantity": 789,
+        "unit": {
+          "name": "\tшт.\t",
+          "id": "H87"
+        }
+      },
+      {
+        "id": "c10fb1cfebbf4b658aa70953aba68c3e",
+        "description": "Функціональне (галузеве) машинобудування",
+        "classification": {
+          "scheme": "CPV",
+          "id": "37512000-0"
+        },
+        "additionalClassifications": [
+          {
+            "scheme": "ДК015",
+            "id": "I.2 11.05"
+          }
+        ],
+        "quantity": 777,
+        "unit": {
+          "name": "\tм.кв.\t",
+          "id": "MTK"
+        }
+      }
+    ],
+    "value": {
+      "amount": 70000,
+      "currency": "UAH"
+    },
+    "procurementMethod": "open",
+    "awardCriteria": "lowestCost",
+    "submissionMethod": [
+      "electronicAuction"
+    ],
+    "submissionMethodDetails": "quick",
+    "tenderPeriod": {
+      "startDate": "2016-04-19T12:09:04.284659+03:00",
+      "endDate": "2016-04-19T12:31:00+03:00"
+    },
+    "enquiryPeriod": {
+      "startDate": "2016-04-19T12:09:04.284659+03:00",
+      "endDate": "2016-04-19T12:26:00+03:00"
+    },
+    "awardPeriod": {
+      "startDate": "2016-04-19T14:23:39.983202+03:00",
+      "endDate": "2016-04-20T12:58:46.919222+03:00"
+    },
+    "tenderers": [
+      {
+        "name": "РушничОК",
+        "id": "0159357789"
+      },
+      {
+        "name": "Килимки",
+        "id": "4569517536"
+      }
+    ],
+    "procuringEntity": {
+      "name": "ЙогаСофт1",
+      "id": "0065475395"
+    },
+    "documents": [
+      {
+        "title": "Документ Microsoft Word.docx",
+        "id": "4e587a0222d544f282eb8fed1fc56895",
+        "documentType": "biddingDocuments",
+        "description": "Інформація для потенційних постачальників, що описує цілі договору (наприклад, товари та послуги, які будуть закуплені) і процес торгів.",
+        "url": "https://public.docs-sandbox.openprocurement.org/get/3437c006b9a6457c88a14b7319050118?Prefix=15ed90e06ae945af848ee3b08e0ec1af%2F4e587a0222d544f282eb8fed1fc56895&KeyID=1331dc52&Signature=YfJJAZtdGMqgWWW3elZpssQGZxaRXhSKikwSzDzq7vF6zHfWVWZ5xpPfqfKSZnvWf4FrJQGM%252B6IZo5FpWhRwDQ%253D%253D",
+        "datePublished": "2016-04-19T12:07:08.270326+03:00",
+        "dateModified": "2016-04-19T12:07:08.270349+03:00",
+        "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      },
+      {
+        "title": "audit_15ed90e06ae945af848ee3b08e0ec1af.yaml",
+        "id": "e0ff633edb464969a6967b89439f1f79",
+        "url": "https://public.docs-sandbox.openprocurement.org/get/45749177a8a448dea69d1aff849913a0?Prefix=15ed90e06ae945af848ee3b08e0ec1af%2Fe0ff633edb464969a6967b89439f1f79&KeyID=1331dc52&Signature=zUQv9P7ek3pU05pS90OS6pcD3gw79r3CxCLF59k0HG1V9tLOXlgKLVIeanjz9NSc7KdKmYM1mJDDgCW1tpGkCA%253D%253D",
+        "datePublished": "2016-04-19T14:23:39.372368+03:00",
+        "dateModified": "2016-04-19T14:23:39.372396+03:00",
+        "format": "text/plain"
+      },
+      {
+        "title": "audit_15ed90e06ae945af848ee3b08e0ec1af.yaml",
+        "id": "e0ff633edb464969a6967b89439f1f79",
+        "url": "https://public.docs-sandbox.openprocurement.org/get/d5941663b4254ed592154573aea79ce7?Prefix=15ed90e06ae945af848ee3b08e0ec1af%2Fe0ff633edb464969a6967b89439f1f79&KeyID=1331dc52&Signature=EYeW1a%252BgtovemBsUYFy9SXHhm6DkBckj2GB6jQ3WyVYKv6BoP4VRTinvY7rZUfh7ZsXgsuhCkWAgr2NxUPG4Aw%253D%253D",
+        "datePublished": "2016-04-19T14:23:39.372368+03:00",
+        "dateModified": "2016-04-19T14:23:40.359860+03:00",
+        "format": "text/plain"
+      }
+    ]
+  }
+}
