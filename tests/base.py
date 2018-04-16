@@ -25,5 +25,4 @@ class BaseTest(object):
             self.__class__.TEST_MAPPING, resolver
         )
         parsed = mapper.apply(data)
-        parsed.pop("$schema")
         assert parsed == result

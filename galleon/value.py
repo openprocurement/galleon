@@ -12,31 +12,34 @@ def _get_source(mapper, bind):
         'src', '{}'.format(bind.name)
     ))
 
+def extract(mapper, iterator):
+    result = []
+    if not isinstance(iterator, list):
+        iterator = [iterator]
+    append = result.append
+    extend = result.extend
+    for item in iterator:
+        transformed = mapper.apply(item)
+        if isinstance(transformed, list):
+            extend(transformed)
+        else:
+            append(transformed)
+    return result
+
 
 def extract_array(mapper, bind, data):
-
-    def extract(iterator):
-        result = []
-        if not isinstance(iterator, list):
-            iterator = [iterator]
-        for item in iterator:
-            got = mapper.apply(item)
-            if isinstance(got, list):
-                result.extend(got)
-            else:
-                result.append(got)
-        return result
-
     default, value = _get_source(mapper, bind)
     # TODO: test for default array
     if default:
         return value
     if isinstance(value, list):
-        result = []
-        for source in value:
-            result.extend(extract(finder(source, data)))
+        result = [
+            item
+            for source in value
+            for item in extract(mapper, finder(source, data))
+        ]
     else:
-        result = extract(finder(value, data))
+        result = extract(mapper, finder(value, data))
     return apply_transformations(
         mapper.mapping,
         bind,

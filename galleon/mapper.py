@@ -93,7 +93,8 @@ class Mapper(BaseMapper):
         if self.visitor.is_object:
             obj = {}
             if self.visitor.parent is None:
-                obj['$schema'] = self.visitor.path
+                if self.visitor.path:
+                    obj['$schema'] = self.visitor.path
 
             for child in self.children:
                 value = child.apply(data)
