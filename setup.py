@@ -15,7 +15,7 @@ EXTRA = {
 
 setuptools.setup(
     name="galleon",
-    version="0.1.1",
+    version="0.1.2",
     url="-",
 
     author="yshalenyk",
