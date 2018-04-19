@@ -100,7 +100,7 @@ class Mapper(BaseMapper):
                 value = child.apply(data)
                 if not value and child.optional:
                     continue  # pragma: no cover
-                if value:
+                if value or isinstance(value, bool):
                     if child.visitor.name in obj and child.visitor.is_array:
                         obj[child.visitor.name].extend(value)
                     else:
