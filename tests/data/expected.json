@@ -20,7 +20,8 @@
         "locality": "ГЛИНЯНКА",
         "postalCode": "02134",
         "countryName": "УКРАЇНА"
-      }
+      },
+      "roles": ["procuringEntity"]
     },
     {
       "identifier": {
@@ -34,7 +35,8 @@
         "locality": "ГОЛОСІЇВСЬКИЙ",
         "postalCode": "02134",
         "countryName": "УКРАЇНА"
-      }
+      },
+      "roles": ["tenderer"]
     },
     {
       "identifier": {
@@ -48,7 +50,8 @@
         "locality": "ДЕСНЯНСЬКИЙ",
         "postalCode": "02156",
         "countryName": "УКРАЇНА"
-      }
+      },
+      "roles": ["tenderer"]
     }
   ],
   "buyer": {
