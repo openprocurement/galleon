@@ -14,9 +14,14 @@ def uniq(mapping, bind, value):
     return jq.jq('.|unique').transform(value)
 
 
+def count(mapping, bind, value):
+    return len(value)
+
+
 TRANSFORMS = {
     'uniq': uniq,
-    'unique': uniq
+    'unique': uniq,
+    'count': count
 }
 
 

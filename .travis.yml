@@ -1,0 +1,7 @@
+language: python
+python: '3.6.5'
+install:
+  - 'python setup.py install'
+  - 'pip install pytest-cov pytest-benchmark pyyaml'
+script:
+  - 'python -m pytest'
