@@ -14,5 +14,5 @@ class TestBechmark(object):
         )
 
     def test_benchmark(self, benchmark, data):
-        result = benchmark(self.mapper.apply, TENDER)
+        result = benchmark(self.mapper.apply, data)
         assert RESULT == result

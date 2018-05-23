@@ -5,11 +5,14 @@ pre-hooks:
   - ". as $data|.items as $items | $data.awards=(.awards | map(. as $award | $award.items = if $data.lots then $items|map(select(.relatedLot == $award.lotID)) else $items end))"
   - "if .procuringEntity then .procuringEntity.roles = \"procuringEntity\" else . end"
   - "if .bids then .bids = (.bids | map(if .tenderers then .tenderers = (.tenderers | map(.roles = \"tenderer\")) else . end)) else . end"
+  - "if .awards then .awards = (.awards | map(if .suppliers then .suppliers = (.suppliers | map(.roles = \"supplier\")) else . end)) else . end"
 mapping:
   id:
     src: id
   ocid:
     src: tenderID
+    transforms:
+    - '"ocds-be6bcu"+.'
   date:
     src: dateModified
   language:
@@ -22,6 +25,7 @@ mapping:
     src:
       - procuringEntity
       - "bids[].tenderers[]"
+      - "awards[].suppliers[]"
     $ref: "#/definitions/organization"
     transforms:
       - uniq
@@ -83,6 +87,10 @@ mapping:
         transforms:
           - uniq
         $ref: "#/definitions/organizationReference"
+      numberOfTenderers:
+        src: "bids[].tenderers[]"
+        transforms:
+          - count
       procuringEntity:
         src: procuringEntity
         $ref: "#/definitions/organizationReference"
@@ -93,8 +101,19 @@ mapping:
         src: "bids[].tenderers[]"
         transforms:
           - count
-
 definitions:
+  contactPoint:
+    mapping:
+      name:
+        src: name
+      email:
+        src: email
+      telephone:
+        src: telephone
+      faxNumber:
+        src: faxNumber
+      url:
+        src: url
   document:
     mapping:
       title:
@@ -150,6 +169,9 @@ definitions:
       address:
         src: address
         $ref: "#/definitions/address"
+      contactPoint:
+        src: contactPoint
+        $ref: "#/definitions/contactPoint"
       roles:
         src: roles
 

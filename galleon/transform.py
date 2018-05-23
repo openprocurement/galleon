@@ -9,10 +9,8 @@ with_entries(
 )
 """
 
-
 def uniq(mapping, bind, value):
     return jq.jq('.|unique').transform(value)
-
 
 def count(mapping, bind, value):
     return len(value)
