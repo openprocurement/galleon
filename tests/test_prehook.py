@@ -5,7 +5,9 @@ class TestMapperPrehook(BaseTest):
     params = {
         'test_simple': [
             {
-                "data": {'procuringEntity': {}},
+                "data": {'procuringEntity': {
+                    'identifier': {'id': 'id'}
+                }},
                 "result": {"parties": [{"roles": "procuringEntity"}]}
             },
             {
@@ -15,7 +17,9 @@ class TestMapperPrehook(BaseTest):
             {
                 "data": {"bids": 
                     [{
-                        "tenderers": [{}]
+                        "tenderers": [{
+                            'identifier': {'id': 'id'}
+                        }]
                     }]
                 },
                 "result": {"parties": [{"roles": "tenderer"}]}

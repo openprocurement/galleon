@@ -1,0 +1,560 @@
+pre-hooks:
+  - ". as $data | $data.bids = if $data.bids then $data.bids else [] end"
+  - ". as $data | $data.awards = if $data.awards then $data.awards else [] end"
+  - ". as $data | $data.contracts = if $data.contracts then $data.contracts else [] end"
+  - ". as $data |.items as $items | $data.awards=(.awards? | map(. as $award | $award.items = if $data.lots then $items|map(select(.relatedLot == $award.lotID)) else $items end))"
+  - '. as $data | if $data.auctionPeriod then $data.auctions = (if $data.lots then $data.lots | map({"url": .auctionUrl, "minimalStep": .minimalStep, "period": .auctionPeriod, "relatedLot": .id}) else [{"url": $data.auctionUrl, "minimalStep": $data.minimalStep, "period": $data.auctionPeriod}] end) else $data end'
+  - '. as $data | if $data.bids then $data.bids = (if $data.lots then {"details": ([.bids as $bids| $bids | .[] as $bid| $bid | .lotValues[]? as $value | $value + $bid|del(.lotValues)])} else {"details": $data.bids} end) else $data end'
+  - "if .procuringEntity then .procuringEntity.roles = \"procuringEntity\" else . end"
+  - "if .bids then .bids.details = (.bids.details | map(if .tenderers then .tenderers = (.tenderers | map(.roles = \"tenderer\")) else . end)) else . end"
+  - "if .awards then .awards = (.awards | map(if .suppliers then .suppliers = (.suppliers | map(.roles = \"supplier\")) else . end)) else . end"
+  - 'if .cancellations and (.cancellations | any(.cancellationOf == "tender")) then .pendingCancellation = true else . end'
+  - '.cancellations as $cancellations | if $cancellations and .lots then .lots = (.lots | map(. as $lot | if ($cancellations | any(.cancellationOf == "lot" and .relatedLot == $lot.id)) then $lot.pendingCancellation = true else . end)) else . end'
+  - 'if .procuringEntity then if .procuringEntity.contactPoint and .language then .procuringEntity.contactPoint.availbaleLanguage = .language else . end else . end'
+  - '. as $data | if .bids.details then .bids.details = (.bids.details | map(if .tenderers then .tenderers = (.tenderers | map(if .contactPoint then .contactPoint.availableLanguage = $data.language else . end)) else . end )) else . end'
+  - '. as $data | if .awards then .awards = (.awards | map(if .suppliers then .suppliers = (.suppliers | map(if .contactPoint then .contactPoint.availableLanguage = $data.language else . end)) else . end)) else . end'
+mapping:
+  id:
+    src: id
+  ocid:
+    src: tenderID
+    transforms:
+    - '"ocds-be6bcu"+.'
+  date:
+    src: dateModified
+  language:
+    src: language
+    default: uk
+  initiationType:
+    default:
+      - tender
+  parties:
+    src:
+      - procuringEntity
+      - "bids.details[].tenderers[]"
+      - "awards[].suppliers[]"
+    $ref: "#/definitions/organization"
+    transforms:
+      - uniq
+  buyer:
+    src: procuringEntity
+    $ref: "#/definitions/organizationReference"
+  awards:
+    src: awards
+    $ref: "#/definitions/award"
+  contracts:
+    src: contracts
+    $ref: "#/definitions/contract"
+  bids:
+    src: bids
+    $ref: "#/definitions/bids"
+  tender:
+    mapping:
+      status:
+        src: status
+        transforms: 
+        - '.|split(".")|first'
+      currentStage:
+        src: status
+      procurementMethodType:
+        src: procurementMethodType
+      shortlistedFirms:
+        src: shortlistedFirms
+        $ref: "#/definitions/shortlistedFirms"
+      id:
+        src: id
+      tenderID:
+        src: tenderID
+      stage2tenderID:
+        src: stage2tenderID
+      title:
+        src: title
+      description:
+        src: description
+      enquiries:
+        src: questions
+        $ref: "#/definitions/enquiry"
+      auctions:
+        src: auctions
+        $ref: "#/definitions/auction"
+      cause:
+        src: cause
+      causeDescription:
+        src: causeDescription
+      pendingCancellation:
+        src: pendingCancellation
+      items:
+        src: items
+        $ref: "#/definitions/item"
+      value:
+        src: value
+        $ref: "#/definitions/value"
+      qualifications:
+        src: qualifications
+        $ref: "#/definitions/qualification"
+      qualificationPeriod:
+        src: qualificationPeriod
+        $ref: "#/definitions/period"
+      procurementMethod:
+        src: procurementMethod
+      guarantee:
+        src: guarantee
+        $ref: "#/definitions/value"
+      features:
+        src: features
+        $ref: "#/definitions/feature"
+      procurementMethodRationale:
+        src: procurementMethodRationale
+      awardCriteria:
+        src: awardCriteria
+      awardCriteriaDetails:
+        src: awardCriteriaDetails
+      submissionMethod:
+        src: 'submissionMethod'
+      submissionMethodDetails:
+        src: submissionMethodDetails
+      tenderPeriod:
+        src: tenderPeriod
+        $ref: "#/definitions/period"
+      enquiryPeriod:
+        src: enquiryPeriod
+        $ref: "#/definitions/period"
+      hasEnquiries:
+        src: hasEnquiries
+      eligibilityCriteria:
+        src: eligibilityCriteria
+      awardPeriod:
+        src: awardPeriod
+        $ref: "#/definitions/period"
+      procuringEntity:
+        src: procuringEntity
+        $ref: "#/definitions/organizationReference"
+      documents:
+        src: documents
+        $ref: "#/definitions/document"
+      complaints:
+        src: complaints
+        $ref: "#/definitions/complaint"
+      complaintPeriod:
+        src: complaintPeriod
+        $ref: "#/definitions/period"
+      lots:
+        src: lots
+        $ref: "#/definitions/lot"
+definitions:
+  enquiry:
+    mapping:
+      id:
+        src: id
+      date:
+        src: date
+      author:
+        src: author
+      title:
+        src: title
+      description:
+        src: description
+      answer:
+        src: answer
+      dateAnswered:
+        src: dateAnswered
+      relatedItem:
+        src: relatedItem
+      relatedLot:
+        src: relatedLot
+  lot:
+    mapping:
+      id:
+        src: id
+      status:
+        src: status
+      description:
+        src: description
+      title:
+        src: title
+      value:
+        src: value
+        $ref: "#/definitions/value"
+      pendingCancellation:
+        src: pendingCancellation
+      guarantee:
+        src: guarantee
+        $ref: "#/definitions/value"
+  parameter:
+    mapping:
+      code: 
+        src: code
+      value:
+        src: value
+  feature:
+    mapping:
+      code:
+        src: code
+      featureOf:
+        src: featureOf
+      relatedItem:
+        src: relatedItem
+      title:
+        src: title
+      description:
+        src: description
+      enum:
+        mapping:
+          value:
+            src: value
+          title:
+            src: title
+          description:
+            src: description
+  document:
+    mapping:
+      title:
+        src: title
+      id:
+        src: id
+      documentType:
+        src: documentType
+      description:
+        src: description
+      url:
+        src: url
+      datePublished:
+        src: datePublished
+      dateModified:
+        src: dateModified
+      format:
+        src: format
+      language:
+        src: language
+      documentScope:
+        src: documentOf
+      relatedItem:
+        src: relatedItem
+  period:
+    mapping:
+      startDate:
+        src: startDate
+      endDate:
+        src: endDate
+  organizationReference:
+    mapping:
+      name:
+        src: name
+      id:
+        src: identifier.id
+  address:
+    mapping:
+      streetAddress:
+        src: streetAddress
+      locality:
+        src: locality
+      postalCode:
+        src: postalCode
+      countryName:
+        src: countryName
+  organization:
+    mapping:
+      identifier: 
+         src: identifier
+         $ref: "#/definitions/identifier"
+      additionalIdentifiers: 
+        src: additionalIdentifiers
+        $ref: "#/definitions/identifier"
+      name:
+        src: name
+      address:
+        src: address
+        $ref: "#/definitions/address"
+      contactPoint:
+        src: contactPoint
+        $ref: "#/definitions/contactPoint"
+      additionalContactPoints:
+        src: additionalContactPoints
+        $ref: "#/definitions/contactPoint"
+      roles:
+        src: roles
+  contactPoint:
+    mapping:
+      name:
+        src: name
+      email:
+        src: email
+      telephone:
+        src: telephone
+      faxNumber:
+        src: faxNumber
+      url:
+        src: url
+      availableLanguage:
+        src: availableLanguage
+  value:
+    mapping:
+      amount:
+        src: amount
+      currency:
+        src: currency
+      valueAddedTaxIncluded:
+        src: valueAddedTaxIncluded
+  identifier:
+    mapping:
+      scheme:
+        src: scheme
+      id:
+        src: id
+      legalName:
+        src: legalName
+      uri:
+        src: uri
+  unit:
+    mapping:
+      name:
+        src: name
+      id:
+        src: code
+      scheme:
+        src: scheme
+  item:
+    mapping:
+      id:
+        src: id
+      description:
+        src: description
+      classification:
+        src: classification
+        $ref: "#/definitions/identifier"
+      additionalClassifications:
+        src: additionalClassifications
+        $ref: "#/definitions/identifier"
+      quantity:
+        src: quantity
+      relatedLot:
+        src: relatedLot
+      unit:
+        src: unit
+        $ref: "#/definitions/unit"
+      deliveryAddress:
+        src: deliveryAddress
+        $ref: "#/definitions/address"
+      deliveryDate:
+        src: deliveryDate
+        $ref: "#/definitions/period"
+      deliveryLocation:
+        src: deliverylocation
+        $ref: "#/definitions/location"
+  award:
+    mapping:
+      id:
+        src: id
+      lotID:
+        src: lotID
+      title:
+        src: title
+      description:
+        src: description
+      status:
+        src: status
+      date:
+        src: date
+      value:
+        src: value
+        $ref: "#/definitions/value"
+      qualified:
+        src: qualified
+      suppliers:
+        src: suppliers
+        $ref: "#/definitions/organizationReference"
+      items:
+        src: items
+        $ref: "#/definitions/item"
+      contractPeriod:
+        src: contractPeriod
+        $ref: "#/definitions/period"
+      documents:
+        src: documents
+        $ref: "#/definitions/document"
+      complaints:
+        src: complaints
+        $ref: "#/definitions/complaint"
+      complaintPeriod:
+        src: complaintPeriod
+        $ref: "#/definitions/period"
+      eligible:
+        src: eligible
+  contract:
+    mapping:
+      id:
+        src: id
+      title:
+        src: title
+      description:
+        src: description
+      status:
+        src: status
+      period:
+        src: period
+        $ref: "#/definitions/period"
+      value:
+        src: value
+        $ref: "#/definitions/value"
+      items:
+        src: items
+        $ref: "#/definitions/item"
+      dateSigned:
+        src: dateSigned
+      documents:
+        src: documents
+        $ref: "#/definitions/document"
+      contractID:
+        src: contractID
+      contractNumber:
+        src: contractNumber
+      suppliers:
+        src: suppliers
+        $ref: "#/definitions/organizationReference"
+  auction:
+    mapping:
+      url:
+        src: url
+      period:
+        src: period
+        $ref: "#/definitions/period"
+      minimalStep:
+        src: minimalStep
+        $ref: "#/definitions/value"
+      relatedLot:
+        src: relatedLot
+  bid:
+    mapping:
+      id:
+        src: id
+      date:
+        src: date
+      status:
+        src: status
+      selfQualified:
+        src: selfQualified
+      tenderers:
+        src: tenderers
+        $ref: "#/definitions/organizationReference"
+      value:
+        src: value
+        $ref: "#/definitions/value"
+      documents:
+        src: documents
+        $ref: "#/definitions/document"
+      relatedLot:
+        src: relatedLot
+      participationUrl:
+        src: participationUrl
+      parameters:
+        src: parameters
+        $ref: "#/definitions/parameter"
+      selfEligible:
+        src: selfEligible
+      eligibilityDocuments:
+        src: eligibilityDocuments
+        $ref: "#/definitions/document"
+      qualificationDocuments:
+        src: qualificationDocuments
+        $ref: "#/definitions/document"
+  bids:
+    mapping:
+      details:
+        src: details
+        $ref: "#/definitions/bid"
+  complaint:
+    mapping:
+      id:
+        src: id
+      status:
+        src: status
+      title:
+        src: title
+      decision:
+        src: decision
+      tendererActionDate:
+        src: tendererActionDate
+      satisfied:
+        src: satisfied
+      tendererAction:
+        src: tendererAction
+      dateSubmitted:
+        src: dateSubmitted
+      reviewPlace:
+        src: reviewPlace
+      documents:
+        src: documents
+        $ref: "#/definitions/document"
+      relatedLot:
+        src: relatedLot
+      acceptance:
+        src: acceptance
+      dateEscalated:
+        src: dateEscalated
+      rejectReasonDescription:
+        src: rejectReasonDescription
+      cancellationReason:
+        src: cancellationReason
+      dateAnswered:
+        src: dateAnswered
+      type:
+        src: type
+      description:
+        src: description
+      dateCancelled:
+        src: dateCancelled
+      date:
+        src: date
+      dateDecision:
+        src: dateDecision
+      author:
+        src: author
+      rejectReason:
+        src: rejectReason
+      resolutionType:
+        src: resolutionType
+      resolution:
+        src: resolution
+      reviewDate:
+        src: reviewDate
+  qualification:
+    mapping:
+      id:
+        src: id
+      title:
+        src: title
+      description:
+        src: description
+      status:
+        src: status
+      lotID:
+        src: lotID
+      eligible:
+        src: eligible
+      qualified:
+        src: qualified
+      bidID:
+        src: bidID
+      date:
+        src: date
+      documents:
+        src: documents
+        $ref: "#/definitions/document"
+  location:
+    mapping:
+      geometry:
+        mapping:
+          coordinates:
+            src:
+              - latitude
+              - longtitude # order???
+  shortlistedFirms:
+    mapping:
+      lots:
+        src: lots
+        $src: "#/definitions/lot"
+      identifier:
+        src: identifier
+        $src: "#/definitions/identifier"
+      name:
+        src: name

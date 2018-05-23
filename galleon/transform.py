@@ -9,26 +9,6 @@ with_entries(
 )
 """
 
-def merge_roles(mapping, bind, value):
-    ids = {}
-
-    for i, v in enumerate(value):
-        id = v['identifier']['id']
-        roles = v['roles']
-        if id not in ids:
-            ids[id] = [[i], roles]
-        else:
-            ids[id][0].append(i)
-            ids[id][1].extend(roles)
-
-    for _, pair in ids.items():
-        for v in value:
-            indexes = pair[0]
-            roles = pair[1]
-            for index in indexes:
-                value[index]['roles'] = roles
-    return value
-
 def uniq(mapping, bind, value):
     return jq.jq('.|unique').transform(value)
 
@@ -39,8 +19,7 @@ def count(mapping, bind, value):
 TRANSFORMS = {
     'uniq': uniq,
     'unique': uniq,
-    'count': count,
-    'merge_roles': merge_roles
+    'count': count
 }
 
 

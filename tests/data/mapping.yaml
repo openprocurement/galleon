@@ -28,7 +28,6 @@ mapping:
       - "awards[].suppliers[]"
     $ref: "#/definitions/organization"
     transforms:
-      - merge_roles
       - uniq
   buyer:
     src: procuringEntity
@@ -88,6 +87,10 @@ mapping:
         transforms:
           - uniq
         $ref: "#/definitions/organizationReference"
+      numberOfTenderers:
+        src: "bids[].tenderers[]"
+        transforms:
+          - count
       procuringEntity:
         src: procuringEntity
         $ref: "#/definitions/organizationReference"
