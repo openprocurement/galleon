@@ -97,10 +97,6 @@ mapping:
       documents:
         src: documents
         $ref: "#/definitions/document"
-      numberOfTenderers:
-        src: "bids[].tenderers[]"
-        transforms:
-          - count
 definitions:
   contactPoint:
     mapping:
@@ -174,7 +170,6 @@ definitions:
         $ref: "#/definitions/contactPoint"
       roles:
         src: roles
-
   value:
     mapping:
       amount:
