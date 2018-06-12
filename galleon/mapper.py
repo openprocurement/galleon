@@ -3,10 +3,8 @@ from jsonmapping import Mapper as BaseMapper
 from jsonmapping import SchemaVisitor
 from copy import deepcopy
 from jq import jq
-from .value import (
-    extract_array,
-    extract_value,
-    )
+from .value import extract_array, extract_value
+from .transform import apply_transformations
 
 
 class Mapper(BaseMapper):
@@ -17,8 +15,7 @@ class Mapper(BaseMapper):
             resolver,
             visitor=None,
             scope=None,
-            mapping_resolver=None
-            ):
+            mapping_resolver=None):
 
         if visitor is None:
             schema = resolver.referrer
@@ -86,9 +83,9 @@ class Mapper(BaseMapper):
         mapping. It is used to skip optional branches of the object graph. """
         if not self.visitor.parent:
             # TODO: tests
-            hooks = self.mapping.get('pre-hooks', [])
-            for hook in hooks:
-                data = jq(hook).transform(data)
+            # Use transforms from root
+            # hooks = self.mapping.get('$pre-hooks', [])
+            data = apply_transformations(self.mapping, self.visitor, data)
 
         if self.visitor.is_object:
             obj = {}

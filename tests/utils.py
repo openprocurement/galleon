@@ -9,6 +9,8 @@ SCHEMAS = {
             "id": {"type": "string"},
             "title": {"type": "string"},
             "date": {"type": "string"},
+            "tags": {"type": "array", "items": {"type": "string"}},
+            "roles": {"type": "array", "items": {"type": "string"}}
         }
     },
     'array': {
@@ -58,6 +60,7 @@ def simple_resolver():
 @pytest.fixture
 def array_resolver():
     return RefResolver.from_schema(SCHEMAS['array'])
+
 
 @pytest.fixture
 def prehook_resolver():
