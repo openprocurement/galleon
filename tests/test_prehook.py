@@ -28,7 +28,7 @@ class TestMapperPrehook(BaseTest):
     }
 
     TEST_MAPPING = {
-        "pre-hooks": [
+        "transforms": [
             "if .procuringEntity then .procuringEntity.roles |= \"procuringEntity\" else . end",
             "if .bids then .bids = (.bids | map(if .tenderers then .tenderers = (.tenderers | map(.roles |= \"tenderer\")) else . end)) else . end"
         ],

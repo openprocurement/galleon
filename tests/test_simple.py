@@ -23,7 +23,7 @@ class TestMapperSimple(BaseTest):
     TEST_MAPPING = {
         'mapping': {
             'id': {
-            'src': 'id'
+                'src': 'id'
             },
             'title': {
                 'src': 'title'

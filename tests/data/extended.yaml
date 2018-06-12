@@ -1,4 +1,4 @@
-pre-hooks:
+transforms:
   - ". as $data | $data.bids = if $data.bids then $data.bids else [] end"
   - ". as $data | $data.awards = if $data.awards then $data.awards else [] end"
   - ". as $data | $data.contracts = if $data.contracts then $data.contracts else [] end"
