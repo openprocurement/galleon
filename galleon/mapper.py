@@ -5,10 +5,10 @@ from copy import deepcopy
 from jq import jq
 from .value import extract_array, extract_value
 from .transform import apply_transformations
+from .utils import extract_options
 
 
 class Mapper(BaseMapper):
-
     def __init__(
             self,
             mapping,
@@ -20,7 +20,6 @@ class Mapper(BaseMapper):
         if visitor is None:
             schema = resolver.referrer
             visitor = SchemaVisitor(schema, resolver, scope=scope)
-
         self.visitor = visitor
         self.mapping = mapping.copy()
         if not self.visitor.parent:
@@ -48,6 +47,7 @@ class Mapper(BaseMapper):
     @property
     def children(self):
         if not hasattr(self, '_children'):
+            self.mapping = extract_options(self.mapping, self.visitor)
             if self.visitor.is_array:
                 self._children = Mapper(
                     self.mapping,
@@ -57,8 +57,8 @@ class Mapper(BaseMapper):
                     )
             elif self.visitor.is_object:
                 self._children = []
-                mp = self.mapping
-                for name, mappings in mp.get('mapping', {}).items():
+                _mapping = self.mapping
+                for name, mappings in _mapping.get('mapping', {}).items():
                     if hasattr(mappings, 'items'):
                         mappings = [mappings]
                     for mapping in mappings:
