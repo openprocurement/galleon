@@ -2,7 +2,6 @@ from jsonschema import RefResolver
 from jsonmapping import Mapper as BaseMapper
 from jsonmapping import SchemaVisitor
 from copy import deepcopy
-from jq import jq
 from .value import extract_array, extract_value
 from .transform import apply_transformations
 from .utils import extract_options

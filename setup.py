@@ -3,7 +3,7 @@ import setuptools
 REQUIRES = [
     'jsonschema',
     'jsonmapping',
-    'jq',
+    'pyjq',
     'jmespath'
 ]
 TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark']

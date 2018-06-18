@@ -1,4 +1,3 @@
-import jq
 from jsonmapping.value import is_empty, convert_value
 from .transform import apply_transformations
 from .finder import finder

@@ -1,7 +1,8 @@
-import jq
+import pyjq
+from repoze.lru import lru_cache
 
 def jq_apply(filter, value):
-    return jq.jq(filter).transform(value)
+    return pyjq.first(filter, value)
 
 
 def extract_options(mapping, visitor):
@@ -26,7 +27,4 @@ def extract_options(mapping, visitor):
         options = mapping.pop('$options', None)
         if options and options.get('$use-schema'):
             mapping.update(extract(mapping, visitor))
-    if node_name == "tender":
-        pass
-        #import pdb;pdb.set_trace()
     return mapping

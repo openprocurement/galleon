@@ -1,4 +1,3 @@
-import jq
 from .finder import finder
 from .utils import jq_apply
 from .lib import INITIALIZE, UNIQ, TAG_OCDS, TAG_ROLES
