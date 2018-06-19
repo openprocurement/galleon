@@ -1,5 +1,4 @@
 import pyjq
-from repoze.lru import lru_cache
 
 def jq_apply(filter, value):
     return pyjq.first(filter, value)
