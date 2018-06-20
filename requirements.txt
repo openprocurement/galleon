@@ -1,0 +1,13 @@
+banal==0.3.7
+chardet==3.0.4
+decorator==4.3.0
+jmespath==0.9.3
+jsonmapping==0.7.4
+jsonschema==2.6.0
+networkx==2.1
+normality==0.6.1
+pyjq==2.1.0
+python-dateutil==2.7.3
+six==1.11.0
+typecast==0.3.3
+Unidecode==1.0.22
