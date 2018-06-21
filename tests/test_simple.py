@@ -91,6 +91,10 @@ class TestMapperTransform(BaseTest):
                 "data": {'id': 'id-123321'},
                 "result": {'id': 'id'}
             },
+            {
+                "data": {"id": "active.qualification"},
+                "result": {"id": "active"}
+            }
         ],
     }
 
@@ -99,7 +103,13 @@ class TestMapperTransform(BaseTest):
             'id': {
                 'src': 'id',
                 'transforms': [
-                    '.|split("-")|first'
+                    '.|split("-")|first',
+                    {
+                        'name': 'replace',
+                        'args': {
+                            'active.qualification': 'active',
+                        }
+                    }
                 ]
             },
         }

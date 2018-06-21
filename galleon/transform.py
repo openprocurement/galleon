@@ -29,6 +29,12 @@ def tag_role(mapping, bind, value, args):
 def count(mapping, bind, value):
     return len(value)
 
+def replace(mapping, bind, value, args=None):
+    replaced = args.get(value)
+    if replaced:
+        return replaced
+    return value
+
 
 TRANSFORMS = {
     'uniq': uniq,
@@ -36,7 +42,8 @@ TRANSFORMS = {
     'count': count,
     'tag_ocds': tag_ocds,
     'tag_role': tag_role,
-    'initialize': initialize
+    'initialize': initialize,
+    'replace': replace
 }
 
 
