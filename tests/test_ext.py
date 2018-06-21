@@ -38,6 +38,21 @@ class TestMapperExtensions(object):
     def test_ext(self, data, result):
         assert self.mapper.apply(data) == result
 
+        data['bids'] = [
+            {
+                'id': 'id',
+                'status': 'active'
+            },
+            {
+                'id': 'id',
+                'status': 'invalid.pre-qualification'
+            }
+        ]
+        assert self.mapper.apply(data)['bids']['details'] == [
+            {'id': 'id', 'status': 'valid'},
+            {'id': 'id', 'status': 'disqualified'}
+        ]
+
         data['shortlistedFirms'] = [
             {
                 'name': 'name'
@@ -90,3 +105,4 @@ class TestMapperExtensions(object):
         assert self.mapper.apply(data)['parties'] == [
             {'identifier': {'id': 'id'}, 'roles': ['procuringEntity']}
         ]
+
