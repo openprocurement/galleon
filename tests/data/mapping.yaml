@@ -37,7 +37,7 @@ mapping:
       - "awards[].suppliers[]"
     $ref: "#/definitions/organization"
     transforms:
-      - uniq
+      - uniq_roles
   buyer:
     src: procuringEntity
     $ref: "#/definitions/organizationReference"
