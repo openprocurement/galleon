@@ -35,6 +35,31 @@
     {
       "identifier": {
         "scheme": "UA-EDR",
+        "id": "0159357789",
+        "legalName": "ТОВ \"РушничОК\""
+      },
+      "name": "РушничОК",
+      "address": {
+        "streetAddress": "просп. Маяковського, 8Б",
+        "locality": "ДЕСНЯНСЬКИЙ",
+        "postalCode": "02156",
+        "countryName": "УКРАЇНА",
+        "region": "м.Київ"
+      },
+      "contactPoint": {
+        "name": "Фещенко Денис Володимирович",
+        "email": "PBuser3@i.ua",
+        "telephone": "+380503341003",
+        "faxNumber": "+380503341003"
+      },
+      "roles": [
+        "tenderer",
+        "supplier"
+      ]
+    },
+    {
+      "identifier": {
+        "scheme": "UA-EDR",
         "id": "4569517536",
         "legalName": "ВАТ \"Килимки\""
       },
@@ -49,54 +74,6 @@
       "contactPoint": {
         "name": "Аушева Анна Андріївна",
         "email": "PBuser2@i.ua",
-        "telephone": "+380503341003",
-        "faxNumber": "+380503341003"
-      },
-      "roles": [
-        "tenderer"
-      ]
-    },
-    {
-      "identifier": {
-        "scheme": "UA-EDR",
-        "id": "0159357789",
-        "legalName": "ТОВ \"РушничОК\""
-      },
-      "name": "РушничОК",
-      "address": {
-        "streetAddress": "просп. Маяковського, 8Б",
-        "locality": "ДЕСНЯНСЬКИЙ",
-        "postalCode": "02156",
-        "countryName": "УКРАЇНА",
-        "region": "м.Київ"
-      },
-      "contactPoint": {
-        "name": "Фещенко Денис Володимирович",
-        "email": "PBuser3@i.ua",
-        "telephone": "+380503341003",
-        "faxNumber": "+380503341003"
-      },
-      "roles": [
-        "supplier"
-      ]
-    },
-    {
-      "identifier": {
-        "scheme": "UA-EDR",
-        "id": "0159357789",
-        "legalName": "ТОВ \"РушничОК\""
-      },
-      "name": "РушничОК",
-      "address": {
-        "streetAddress": "просп. Маяковського, 8Б",
-        "locality": "ДЕСНЯНСЬКИЙ",
-        "postalCode": "02156",
-        "countryName": "УКРАЇНА",
-        "region": "м.Київ"
-      },
-      "contactPoint": {
-        "name": "Фещенко Денис Володимирович",
-        "email": "PBuser3@i.ua",
         "telephone": "+380503341003",
         "faxNumber": "+380503341003"
       },

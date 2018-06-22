@@ -6,7 +6,7 @@ REQUIRES = [
     'pyjq',
     'jmespath'
 ]
-TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark', 'pyyaml']
+TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark', 'pyyaml', 'glom']
 DEV = TEST + ['ipdb']
 EXTRA = {
     'test': TEST,

@@ -1,12 +1,17 @@
 from .finder import finder
 from .utils import jq_apply
-from .lib import INITIALIZE, UNIQ, TAG_OCDS, TAG_ROLES
+from .lib import INITIALIZE
 
 from pkg_resources import iter_entry_points
+from glom import glom
 
 
 def uniq(mapping, bind, value):
-    return jq_apply(UNIQ, value)
+    result = []
+    for v in value:
+        if v not in result:
+            result.append(v)
+    return result
 
 
 def initialize(mapping, bind, value, args=None):
@@ -18,16 +23,41 @@ def initialize(mapping, bind, value, args=None):
 
 def tag_ocds(mapping, bind, value, args):
     default = args.get('default')
-    return jq_apply(TAG_OCDS.format(default=default), value)
+    tags = [default] if default else []
+    if 'contracts' in value:
+        tags.append('contract')
+    if 'awards' in value:
+        tags.append('award')
+    if 'tags' in value:
+        value['tags'].extend(tags)
+    else:
+        value['tags'] = tags
+    return value
 
 
 def tag_role(mapping, bind, value, args):
     path = args.get('path')
     role = args.get('role')
-    return jq_apply(TAG_ROLES.format(path=path, role=role), value)
+    if path:
+        field = glom(value, path)
+    else:
+        field = value
+    if isinstance(field, list):
+        for f in field:
+            if 'roles' in f:
+                f['roles'].append(role)
+            else:
+                f['roles'] = [role]
+    elif 'roles' in field:
+        field['roles'].append(role)
+    else:
+        field['roles'] = [role]
+    return value
+
 
 def count(mapping, bind, value):
     return len(value)
+
 
 def replace(mapping, bind, value, args=None):
     replaced = args.get(value)
@@ -36,9 +66,21 @@ def replace(mapping, bind, value, args=None):
     return value
 
 
+def uniq_roles(mapping, bind, value):
+    roles_map = dict()
+    for v in value:
+        id_ = v['identifier']['id']
+        if id_ in roles_map:
+            roles_map[id_]['roles'].extend(v['roles'])
+        else:
+            roles_map[id_] = v
+    return list(roles_map.values())
+
+
 TRANSFORMS = {
     'uniq': uniq,
     'unique': uniq,
+    'uniq_roles': uniq_roles,
     'count': count,
     'tag_ocds': tag_ocds,
     'tag_role': tag_role,
