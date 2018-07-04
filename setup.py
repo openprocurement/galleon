@@ -3,8 +3,9 @@ import setuptools
 REQUIRES = [
     'jsonschema',
     'jsonmapping',
-    'pyjq',
-    'jmespath'
+    'jq',
+    'jmespath',
+    'glom'
 ]
 TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark', 'pyyaml', 'glom']
 DEV = TEST + ['ipdb']

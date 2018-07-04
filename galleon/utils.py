@@ -1,7 +1,7 @@
-import pyjq
+import jq
 
 def jq_apply(filter, value):
-    return pyjq.first(filter, value)
+    return jq.jq(filter).transform(value)
 
 
 def extract_options(mapping, visitor):
