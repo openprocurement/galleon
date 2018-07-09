@@ -69,9 +69,14 @@ def replace(mapping, bind, value, args=None):
 def uniq_roles(mapping, bind, value):
     roles_map = dict()
     for v in value:
-        id_ = v['identifier']['id']
+        id_ = v.get('id', '')
+        if not id_:
+            id_ = v.get('name')
+        if not id_:
+            return value
         if id_ in roles_map:
-            roles_map[id_]['roles'].extend(v['roles'])
+            roles_map[id_].setdefault('roles', []).extend(v.get('roles',[]))
+            roles_map[id_]['roles'] = list(set(roles_map[id_]['roles']))
         else:
             roles_map[id_] = v
     return list(roles_map.values())
