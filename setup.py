@@ -5,7 +5,8 @@ REQUIRES = [
     'jsonmapping',
     'jq',
     'jmespath',
-    'glom'
+    'glom',
+    'arrow'
 ]
 TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark', 'pyyaml', 'glom']
 DEV = TEST + ['ipdb']
