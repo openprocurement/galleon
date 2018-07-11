@@ -53,8 +53,8 @@
         "faxNumber": "+380503341003"
       },
       "roles": [
-        "tenderer",
-        "supplier"
+	"tenderer",
+	"supplier"
       ]
     },
     {

@@ -1,18 +1,24 @@
+import pytest
+import unittest
 from galleon import Mapper
 from jsonschema import RefResolver
 from .base import TENDER, MAPPING, SCHEMA, RESULT
 
 
-class TestBechmark(object):
-    params = {
-        'test_benchmark': [
-            {'data': TENDER}
-        ]
-    }
-    mapper = Mapper(
-        MAPPING, RefResolver.from_schema(SCHEMA)
+class TestBechmark(unittest.TestCase):
+
+    @pytest.fixture(autouse=True)
+    def setupBenchmark(self, benchmark):
+        self.benchmark = benchmark
+
+    def setUp(self):
+        self.data = TENDER
+        self.mapper = Mapper(
+            MAPPING, RefResolver.from_schema(SCHEMA)
         )
 
-    def test_benchmark(self, benchmark, data):
-        result = benchmark(self.mapper.apply, data)
-        assert RESULT == result
+    def test_benchmark(self):
+        self.assertDictEqual(
+            self.benchmark(self.mapper.apply, self.data),
+            RESULT
+        )
