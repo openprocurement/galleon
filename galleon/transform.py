@@ -1,7 +1,8 @@
 from pkg_resources import iter_entry_points
 from .lib import uniq, uniq_roles, count,\
     tag_ocds, tag_role, initialize, replace,\
-    to_isoformat
+    to_isoformat, to_number, merge_by_key
+from .utils import jq_apply
 
 
 TRANSFORMS = {
@@ -13,26 +14,25 @@ TRANSFORMS = {
     'tag_role': tag_role,
     'initialize': initialize,
     'replace': replace,
-    'to_isoformat': to_isoformat
+    'to_isoformat': to_isoformat,
+    'to_number': to_number,
+    'merge_by_key': merge_by_key,
 }
 
 
 def apply_transformations(mapping, bind, value):
     for transform in mapping.get('transforms', []):
-        args = {}
+        arguments = {}
         if isinstance(transform, dict):
-            args = transform.get('args')
+            arguments = transform.get('args')
             transform = transform.get('name')
         if transform in TRANSFORMS:
-            if args:
-                value = TRANSFORMS[transform](mapping, bind, value, args=args)
+            if arguments:
+                value = TRANSFORMS[transform](mapping, bind, value, args=arguments)
             else:
                 value = TRANSFORMS[transform](mapping, bind, value)
         else:
-            try:
-                value = jq_apply(transform, value)
-            except:
-                continue
+            value = jq_apply(transform, value)
     return value
 
 
