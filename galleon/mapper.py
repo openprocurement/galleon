@@ -83,9 +83,7 @@ class Mapper(BaseMapper):
         if not self.visitor.parent:
             # TODO: tests
             # Use transforms from root
-            # hooks = self.mapping.get('$pre-hooks', [])
             data = apply_transformations(self.mapping, self.visitor, data)
-
         if self.visitor.is_object:
             obj = {}
             if self.visitor.parent is None:

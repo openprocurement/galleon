@@ -7,6 +7,9 @@ INITIALIZE = '. as $data | $data.{path} = (if $data.{path} then $data.{path} els
 
 
 def to_isoformat(mapping, bind, value, args=None):
+    """
+    Tansforms date to isoformat
+    """
     tz = None
     try:
         for key in ('tz', 'timezone'):
@@ -23,7 +26,32 @@ def to_isoformat(mapping, bind, value, args=None):
         return value
 
 
+def to_number(mapping, bind, value):
+    """
+    Transforms value to number
+    """
+    if value:
+        return float(value)
+    return None
+
+
+def merge_by_key(mapping, bind, value, args={}):
+    """
+    Merges list of objects by provided key (default is `id`).
+    """
+    if not isinstance(value, list):
+        return value
+    key = args.get('key', 'id')
+    result = {}
+    for obj in value:
+        result.setdefault(key, {}).update(obj)
+    return list(result.values())
+
+
 def uniq(mapping, bind, value):
+    """
+    Makes elements unique
+    """
     result = []
     for v in value:
         if v not in result:
@@ -32,6 +60,9 @@ def uniq(mapping, bind, value):
 
 
 def initialize(mapping, bind, value, args=None):
+    """
+    Initializes provided path with provided value
+    """
     path = args.get('path')
     data = args.get('value')
     _filter = INITIALIZE.format(path=path, value=data)
@@ -39,20 +70,24 @@ def initialize(mapping, bind, value, args=None):
 
 
 def tag_ocds(mapping, bind, value, args):
+    """
+    Makes tags array according to OCDS specification
+    """
     default = args.get('default')
     tags = [default] if default else []
     if 'contracts' in value:
         tags.append('contract')
     if 'awards' in value:
         tags.append('award')
-    if 'tags' in value:
-        value['tags'].extend(tags)
-    else:
-        value['tags'] = tags
+    value.setdefault('tags', [])
+    value['tags'].extend(tags)
     return value
 
 
 def tag_role(mapping, bind, value, args):
+    """
+    Tag object with roles
+    """
     path = args.get('path')
     role = args.get('role')
     if path:
@@ -73,10 +108,16 @@ def tag_role(mapping, bind, value, args):
 
 
 def count(mapping, bind, value):
+    """
+    Counts elements
+    """
     return len(value)
 
 
 def replace(mapping, bind, value, args=None):
+    """
+    Replaces elements in one object by elements from provided
+    """
     replaced = args.get(value)
     if replaced:
         return replaced
@@ -84,6 +125,9 @@ def replace(mapping, bind, value, args=None):
 
 
 def uniq_roles(mapping, bind, value):
+    """
+    Makes roles unique
+    """
     roles_map = dict()
     for v in value:
         id_ = v.get('id', '')
@@ -92,10 +136,8 @@ def uniq_roles(mapping, bind, value):
         if not id_:
             return value
         if id_ in roles_map:
-            roles_map[id_].setdefault('roles', []).extend(v.get('roles',[]))
+            roles_map[id_].setdefault('roles', []).extend(v.get('roles', []))
             roles_map[id_]['roles'] = list(set(roles_map[id_]['roles']))
         else:
             roles_map[id_] = v
     return list(roles_map.values())
-
-
