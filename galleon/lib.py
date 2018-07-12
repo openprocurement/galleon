@@ -23,7 +23,7 @@ def to_isoformat(mapping, bind, value, args=None):
 
         return date.isoformat()
     except:
-        return value
+        return ""
 
 
 def to_number(mapping, bind, value):
