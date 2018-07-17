@@ -1,4 +1,5 @@
 import arrow
+import jmespath
 from glom import glom
 from .utils import jq_apply
 
@@ -24,6 +25,16 @@ def to_isoformat(mapping, bind, value, args=None):
         return date.isoformat()
     except:
         return ""
+
+
+def drop_if_not(mapping, bind, value, args):
+    path = args.get('path', args.get('key', ''))
+    if not path:
+        raise ValueError("<drop_if_not: path is required>")
+    item = jmespath.search(path, value)
+    if not item:
+        return ""
+    return value
 
 
 def to_number(mapping, bind, value):

@@ -1,7 +1,7 @@
 from pkg_resources import iter_entry_points
 from .lib import uniq, uniq_roles, count,\
     tag_ocds, tag_role, initialize, replace,\
-    to_isoformat, to_number, merge_by_key
+    to_isoformat, to_number, merge_by_key, drop_if_not
 from .utils import jq_apply
 
 
@@ -17,6 +17,7 @@ TRANSFORMS = {
     'to_isoformat': to_isoformat,
     'to_number': to_number,
     'merge_by_key': merge_by_key,
+    'drop_if_not': drop_if_not,
 }
 
 
