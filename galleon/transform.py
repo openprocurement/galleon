@@ -24,6 +24,7 @@ TRANSFORMS = {
 def apply_transformations(mapping, bind, value):
     if not value:
         return ""
+    raw = []
     for transform in mapping.get('transforms', []):
         arguments = {}
         if isinstance(transform, dict):
@@ -35,7 +36,10 @@ def apply_transformations(mapping, bind, value):
             else:
                 value = TRANSFORMS[transform](mapping, bind, value)
         else:
-            value = jq_apply(transform, value)
+            raw.append(transform)
+    if raw:
+        transform = '|'.join(raw)
+        value = jq_apply(transform, value)
     return value
 
 
