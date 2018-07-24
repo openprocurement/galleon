@@ -31,8 +31,13 @@ def drop_if_not(mapping, bind, value, args):
     path = args.get('path', args.get('key', ''))
     if not path:
         raise ValueError("<drop_if_not: path is required>")
-    item = jmespath.search(path, value)
-    if not item:
+
+    if isinstance(value, list):
+        return [
+            item for item in value
+            if jmespath.search(path, item)
+        ]
+    if not jmespath.search(path, value):
         return ""
     return value
 
@@ -84,11 +89,18 @@ def tag_ocds(mapping, bind, value, args):
     """
     Makes tags array according to OCDS specification
     """
+    def check_existing(data):
+        return any((
+            item.get('id')
+            for item in data
+        ))
     default = args.get('default')
     tags = [default] if default else []
-    if 'contracts' in value:
+    if 'contracts' in value and\
+       check_existing(value.get('contracts', [])):
         tags.append('contract')
-    if 'awards' in value:
+    if 'awards' in value and\
+       check_existing(value.get('awards', [])):
         tags.append('award')
     value.setdefault('tags', [])
     value['tags'].extend(tags)
