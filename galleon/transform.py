@@ -1,3 +1,4 @@
+import ujson
 from pkg_resources import iter_entry_points
 from .lib import uniq, uniq_roles, count,\
     tag_ocds, tag_role, initialize, replace,\
@@ -39,7 +40,7 @@ def apply_transformations(mapping, bind, value):
             raw.append(transform)
     if raw:
         transform = '|'.join(raw)
-        value = jq_apply(transform, value)
+        value = ujson.loads(jq_apply(transform, ujson.dumps(value), text=True))
     return value
 
 

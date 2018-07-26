@@ -1,6 +1,9 @@
 import jq
 
-def jq_apply(filter, value):
+
+def jq_apply(filter, value, text=False):
+    if text:
+        return jq.jq(filter).transform(text=value, text_output=True)
     return jq.jq(filter).transform(value)
 
 
@@ -15,7 +18,9 @@ def extract_options(mapping, visitor):
                 if is_array:
                     mapping[name] = {'src': name}
                 else:
-                    mapping[name] = {'src': '.'.join((node_name, name))}
+                    mapping[name] = {
+                        'src': '.'.join((node_name, name))
+                    }
         return mapping
 
     if 'mapping' in mapping:
