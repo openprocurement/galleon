@@ -3,7 +3,6 @@ import jmespath
 from glom import glom
 from .utils import jq_apply
 
-
 INITIALIZE = '. as $data | $data.{path} = (if $data.{path} then $data.{path} else {value} end)'
 
 def raw(mapping, bind, value, args=None):
@@ -144,10 +143,14 @@ def replace(mapping, bind, value, args=None):
     """
     Replaces elements in one object by elements from provided
     """
-    replaced = args.get(value)
+    map_with = args.get('map')
+    default = args.get('default')
+    replaced = map_with.get(value)
     if replaced:
         return replaced
-    return value
+    if default:
+        return default
+    return ""
 
 
 def uniq_roles(mapping, bind, value):
