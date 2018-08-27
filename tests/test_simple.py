@@ -88,10 +88,6 @@ class TestMapperTransform(BaseTest):
     params = {
         'test_simple': [
             {
-                "data": {'id': 'id-123321'},
-                "result": {'id': 'id'}
-            },
-            {
                 "data": {"id": "active.qualification"},
                 "result": {"id": "active"}
             }
@@ -103,11 +99,13 @@ class TestMapperTransform(BaseTest):
             'id': {
                 'src': 'id',
                 'transforms': [
-                    '.|split("-")|first',
                     {
                         'name': 'replace',
                         'args': {
-                            'active.qualification': 'active',
+                            'map': {
+                                'active.qualification': 'active',
+                            },
+                            'default': 'active'
                         }
                     }
                 ]

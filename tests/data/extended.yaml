@@ -316,11 +316,13 @@ definitions:
         transforms:
         - name: replace
           args:
-            draft: pending
-            active: valid
-            invalid: disqualified
-            'invalid.pre-qualification': disqualified
-            deleted: withdraw
+            map:
+              draft: pending
+              active: valid
+              invalid: disqualified
+              'invalid.pre-qualification': disqualified
+              deleted: withdraw
+            default: active
       tenderers:
         src: tenderers
         $ref: "#/definitions/organizationReference"

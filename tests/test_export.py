@@ -16,7 +16,7 @@ class TestBechmark(unittest.TestCase):
         self.mapper = Mapper(
             MAPPING, RefResolver.from_schema(SCHEMA)
         )
-
+    @pytest.mark.skip
     def test_benchmark(self):
         self.assertDictEqual(
             self.benchmark(self.mapper.apply, self.data),
