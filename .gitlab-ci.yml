@@ -11,7 +11,7 @@ before_script:
   - docker login -u "$DOCKER_HUB_USERNAME" -p "$DOCKER_HUB_PASSWORD" "$CI_DOCKER_REGISTRY"
   - docker info
 after_script:
-  - docker run --rm -u root -v `pwd`:/package:Z -w /package --entrypoint /bin/bash $CI_DOCKER_REGISTRY/$CI_DOCKER_IMAGE:$CI_DOCKER_TAG bash -c "chown -R `id -u`:`id -g` /package"
+  - docker run --rm -u root -v `pwd`:/package:Z -w /package --entrypoint /bin/bash $CI_DOCKER_REGISTRY/$CI_DOCKER_IMAGE:$CI_DOCKER_TAG -c "chown -R `id -u`:`id -g` /package"
   - docker logout  "$CI_DOCKER_REGISTRY"
 
 test:
