@@ -15,10 +15,11 @@ def to_isoformat(mapping, bind, value, args=None):
     """
     tz = None
     try:
-        for key in ('tz', 'timezone'):
-            if key in args:
-                tz = args[key]
-                break
+        if args:
+            for key in ('tz', 'timezone'):
+                if key in args:
+                    tz = args[key]
+                    break
 
         date = arrow.get(value)
         if tz:
