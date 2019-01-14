@@ -70,4 +70,27 @@ class TestTAG_ROLE(BaseTest):
     }
 
 
-
+class TestFROM_JSON(BaseTest):
+    params = {
+        'test_simple': [
+            {
+                "data": {'id': '4'},
+                "result": {"id": "Test4"}
+            }
+        ],
+    }
+    TEST_MAPPING = {
+        "mapping": {
+            "id": {
+                "src": "id",
+                "transforms": [
+                    {
+                        "name": "from_json",
+                        "args": {
+                            "path": "tests/data/additional/from_json.json",
+                        }
+                    }
+                ]
+            }
+        }
+    }
