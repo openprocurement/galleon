@@ -45,10 +45,10 @@ class JsonFileCache:
 
     def __call__(self, filename):
         if not self.cache.get(filename):
-            f = open(filename, "r")
-            file_data = json.load(f)
-            self.cache[filename] = file_data
-            f.close()
+            with open(filename) as f:
+                file_data = json.load(f)
+                self.cache[filename] = file_data
+                f.close()
         return self.cache[filename]
 
 
