@@ -1,4 +1,5 @@
 import jq
+import json
 
 
 def jq_apply(filter, value, text=False):
@@ -32,3 +33,23 @@ def extract_options(mapping, visitor):
         if options and options.get('$use-schema'):
             mapping.update(extract(mapping, visitor))
     return mapping
+
+
+class JsonFileCache:
+    """
+    Caches the contents of .json files
+    """
+
+    def __init__(self):
+        self.cache = {}
+
+    def __call__(self, filename):
+        if not self.cache.get(filename):
+            with open(filename) as f:
+                file_data = json.load(f)
+                self.cache[filename] = file_data
+                f.close()
+        return self.cache[filename]
+
+
+json_file_cache = JsonFileCache()

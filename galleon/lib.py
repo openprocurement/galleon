@@ -2,9 +2,11 @@ import arrow
 import jmespath
 import deep_merge
 from glom import glom
-from .utils import jq_apply
+
+from .utils import jq_apply, json_file_cache
 
 INITIALIZE = '. as $data | $data.{path} = (if $data.{path} then $data.{path} else {value} end)'
+
 
 def raw(mapping, bind, value, args=None):
     query = args.get('query')
@@ -174,3 +176,21 @@ def uniq_roles(mapping, bind, value):
         else:
             roles_map[id_] = v
     return list(roles_map.values())
+
+
+def from_json(mapping, bind, value, args):
+    """
+    Updates `value` with value from .json file
+    """
+    path = args.get('path')
+    if path:
+        try:
+            json_data = json_file_cache(path)
+            updated = json_data.get(value)
+            if updated:
+                return updated
+            return ""
+        except Exception as e:
+            raise e
+    raise ValueError("<from_json: path is required>")
+
