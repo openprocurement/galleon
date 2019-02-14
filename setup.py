@@ -6,7 +6,8 @@ REQUIRES = [
     'jq',
     'jmespath',
     'glom',
-    'arrow'
+    'arrow',
+    'deep_merge'
 ]
 TEST = REQUIRES + ['pytest', 'pytest-cov', 'pytest-benchmark', 'pyyaml', 'glom']
 DEV = TEST + ['ipdb']
